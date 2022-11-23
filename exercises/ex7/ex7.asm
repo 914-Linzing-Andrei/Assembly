@@ -15,7 +15,7 @@ import exit msvcrt.dll    ; exit is a function that ends the calling process. It
 
 ; our data is declared here (the variables needed by our program)
 segment data use32 class=data
-    a db 1,2,3,4,2,1,2,4,5,1,2
+    a db 1,2,1,2,2,1,2,4,5,1,2
     la equ $-a
     b db 1,2
     lb equ $-b
@@ -34,6 +34,9 @@ segment code use32 class=code
             xor edx,edx            ;edx mereu in loop se initializeaza cu 0
             mov edi,b              
             cld
+            
+            cmp esi,edi
+            jge afara
             cmpsb
             je bun
             
@@ -62,10 +65,12 @@ segment code use32 class=code
                     dec ebx
                     inc eax
                     push ebx
-                
+                    dec esi
+            dec esi
         skip: loop repeta
+        afara:
         ;--------------------------------------------------------------------------------------------------------------------------------------
-        ;pun in [r + edi] pozitiile gasite pe care gasesc substringul b in a (pozitiile au fost initial puse in stiva si le 'scot' de acolo)
+        ;pun in [r + edi] pozitiile pe care gasesc substringul b in a (pozitiile au fost initial puse in stiva si le 'scot' de acolo)
         ;--------------------------------------------------------------------------------------------------------------------------------------
         mov ecx,eax
         dec ecx
