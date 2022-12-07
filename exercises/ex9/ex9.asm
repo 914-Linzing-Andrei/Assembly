@@ -45,56 +45,23 @@ segment code use32 class=code
             test byte[index],0x01
             jnz odd_pos
             
-            
-            stosb
+            movsx eax,al
+            push dword eax
+            push dword format
+            call [fprintf]
+            add esp, 4 * 3
             
             jmp skip
             
             odd_pos:
                 mov al,'X'
-                stosb
+                movsx eax,al
+                push dword eax
+                push dword format
+                call [fprintf]
+                add esp, 4 * 3
         
         skip: loop repeta
         
-        print:
-            push dword accessMode
-            push dword fileName
-            call [fopen]
-            add esp, 4 * 2
-            
-            
-            
-            
-            mov ecx,len
-            mov edi,0
-            
-            printare:
-                ;xor eax,eax
-                
-                ;mov al,[rez + edi]
-                ;mov [fileDescriptor],al
-                
-                ;cmp eax,0
-                ;je end_
-                
-                pushad
-                mov al, [rez + edi]
-                movsx eax, al
-                push eax
-                push dword format
-                push dword [fileDescriptor]
-                call [fprintf]
-                add esp, 4 * 3
-                popad
-                inc edi
-            loop printare
-            
-            push dword [fileDescriptor]
-            call [fclose]
-            add esp,4
-            
-            end_:
-        
         push    dword 0      ; push the parameter for exit onto the stack
         call    [exit]       ; call exit to terminate the program
-
