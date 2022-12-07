@@ -1,3 +1,6 @@
+;A file name and a text (defined in the data segment) are given. The text contains lowercase letters, digits and spaces.
+;Replace all the digits on odd positions with the character ‘X’. Create the file with the given name and write the generated text to file.
+
 bits 32 ; assembling for the 32 bits architecture
 
 ; declare the EntryPoint (a label defining the very first instruction of the program)
