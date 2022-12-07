@@ -66,11 +66,20 @@ segment code use32 class=code
             cmp eax,0
             je end_
             
-            push dword [rez]
-            push dword format
-            push dword [fileDescriptor]
-            call [fprintf]
-            add esp, 4 * 3
+            mov ecx,len
+            
+            printare:
+                pushad
+                mov al, [rez + edi]
+                movsx eax, al
+                push eax
+                push dword format
+                push dword [fileDescriptor]
+                call [fprintf]
+                add esp, 4 * 3
+                popad
+                inc edi
+            loop printare
             
             push dword [fileDescriptor]
             call [fclose]
