@@ -62,16 +62,21 @@ segment code use32 class=code
             call [fopen]
             add esp, 4 * 2
             
-            mov [fileDescriptor],eax
             
-            cmp eax,0
-            je end_
+            
             
             mov ecx,len
             mov edi,0
-            xor eax,eax
             
             printare:
+                ;xor eax,eax
+                
+                ;mov al,[rez + edi]
+                ;mov [fileDescriptor],al
+                
+                ;cmp eax,0
+                ;je end_
+                
                 pushad
                 mov al, [rez + edi]
                 movsx eax, al
@@ -92,3 +97,4 @@ segment code use32 class=code
         
         push    dword 0      ; push the parameter for exit onto the stack
         call    [exit]       ; call exit to terminate the program
+
