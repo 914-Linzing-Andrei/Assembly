@@ -38,13 +38,16 @@ segment code use32 class=code
         mov ecx,len
         
         cld
+        push dword accessMode
+        push dword fileName
+        call [fopen]
+        add esp, 4 * 2
         
         repeta:
             lodsb
             inc byte[index]
             test byte[index],0x01
             jnz odd_pos
-            
             movsx eax,al
             push dword eax
             push dword format
@@ -63,5 +66,10 @@ segment code use32 class=code
         
         skip: loop repeta
         
+        push dword [fileDescriptor]
+        call [fclose]
+        add esp,4
+        
         push    dword 0      ; push the parameter for exit onto the stack
         call    [exit]       ; call exit to terminate the program
+
