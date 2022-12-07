@@ -1,0 +1,1 @@
+A file name and a text (defined in the data segment) are given. The text contains lowercase letters, digits and spaces. Replace all the digits on odd positions with the character ‘X’. Create the file with the given name and write the generated text to file.
