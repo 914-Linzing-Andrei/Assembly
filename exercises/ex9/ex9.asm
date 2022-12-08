@@ -43,6 +43,10 @@ segment code use32 class=code
         call [fopen]
         add esp, 4 * 2
         
+        mov dword [fileDescriptor],eax
+        cmp dword [fileDescriptor],0
+        je final
+        
         repeta:
             lodsb
             inc byte[index]
@@ -50,6 +54,7 @@ segment code use32 class=code
             jnz odd_pos
             movsx eax,al
             push dword eax
+            push dword fileDescriptor
             push dword format
             call [fprintf]
             add esp, 4 * 3
@@ -61,6 +66,7 @@ segment code use32 class=code
                 movsx eax,al
                 push dword eax
                 push dword format
+                push dword fileDescriptor
                 call [fprintf]
                 add esp, 4 * 3
         
@@ -68,8 +74,9 @@ segment code use32 class=code
         
         push dword [fileDescriptor]
         call [fclose]
-        add esp,4
+        add esp,4 * 1
+        
+        final:
         
         push    dword 0      ; push the parameter for exit onto the stack
         call    [exit]       ; call exit to terminate the program
-
