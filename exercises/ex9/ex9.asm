@@ -17,7 +17,7 @@ import fread msvcrt.dll
 
 ; our data is declared here (the variables needed by our program)
 segment data use32 class=data
-    text db "asdg142412 124 124 214   12412asaasd3mkate"
+    text db "asdg142412 124 124"
     len equ $-text
     rez times len db 0
     
@@ -25,6 +25,7 @@ segment data use32 class=data
     accessMode db "w",0
     fileDescriptor dd -1
     
+    tmp db 0, 0
     format db "%s",0
     index db 0
 
@@ -32,43 +33,53 @@ segment data use32 class=data
 segment code use32 class=code
     start:
         int3
-        
-        mov esi,text
-        mov edi,rez
-        mov ecx,len
-        
-        cld
         push dword accessMode
         push dword fileName
         call [fopen]
         add esp, 4 * 2
-        
+         
         mov dword [fileDescriptor],eax
         cmp dword [fileDescriptor],0
         je final
-        
+        mov esi,text
+        mov ecx,len
+        mov edi,rez
+        cld
         repeta:
             lodsb
             inc byte[index]
             test byte[index],0x01
             jnz odd_pos
-            movsx eax,al
-            push dword eax
-            push dword fileDescriptor
+            pushad
+            mov [tmp], al 
+            
+            push tmp
+            ;movsx eax,al
+            ;push eax
             push dword format
+            push dword [fileDescriptor]
+            
             call [fprintf]
+            
             add esp, 4 * 3
+            popad
             
             jmp skip
             
             odd_pos:
+                pushad
                 mov al,'X'
-                movsx eax,al
-                push dword eax
+                mov [tmp], al 
+                push tmp
+                ;movsx eax,al
+                ;push eax
                 push dword format
-                push dword fileDescriptor
+                push dword [fileDescriptor]
+                
                 call [fprintf]
+                
                 add esp, 4 * 3
+                popad
         
         skip: loop repeta
         
