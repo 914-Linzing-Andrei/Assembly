@@ -17,6 +17,7 @@ import fopen msvcrt.dll
 segment data use32 class=data
     a dd 0
     format db "%s",0
+    format2 db "%s",10,0
     res dd 0
     buffer resb 128
     filename db "file.txt",0
@@ -79,7 +80,7 @@ segment code use32 class=code
                 
                 pushad
                 push dword buffer
-                push dword format
+                push dword format2
                 push dword [file_descriptor]
                 call [fprintf]
                 add esp, 4 * 3  
