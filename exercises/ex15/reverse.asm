@@ -1,7 +1,7 @@
 global reverse
 
 segment data use32 class = data
-    numar db 2
+    numar dw 2
 
 segment code use32 class = code
     reverse:
@@ -12,9 +12,10 @@ segment code use32 class = code
         sub esi,edx
         mov eax, edx
         xor edx,edx
-        div byte [numar]
+        div word [numar]
         mov ecx, eax
-        
+        cmp ecx,0
+        je afara
         repeta:
             mov bl,[esi]
             mov bh,[edi]
@@ -24,4 +25,5 @@ segment code use32 class = code
             inc esi
             dec edi
         loop repeta
+        afara:
         ret
