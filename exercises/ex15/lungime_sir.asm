@@ -5,6 +5,7 @@ segment data use32 class = data
 
 segment code use32 class = code
     lungime_sir:
+        mov byte [lungimee], 0
         mov esi, [esp + 4]
         
         repeta:
