@@ -26,8 +26,6 @@ segment code use32 class=code
         xor edx,edx
         
         repeta:
-            
-            inc byte [nr]
             pushad
             push dword buffer
             push dword format
@@ -35,23 +33,26 @@ segment code use32 class=code
             
             add esp, 4 * 2
             popad
+            cmp dword [buffer],0
+            je afara
             mov edi,edx
             ;push dword 0
             push edi
             push dword buffer
             call lungime_sir
             call reverse
-            cmp byte [nr],3
-            je afara
             
+            pop edi
+            
+            push dword edi
+            call [printf]
+            add esp, 4 * 1
             
         loop repeta
         
         afara:
-            mov edi,ebx
-            push dword edi
-            call [printf]
-            add esp, 4 * 1
+            
+            
         
         push    dword 0      ; push the parameter for exit onto the stack
         call    [exit]       ; call exit to terminate the program
