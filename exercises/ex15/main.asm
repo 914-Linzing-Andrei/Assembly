@@ -14,6 +14,7 @@ import printf msvcrt.dll
 segment data use32 class=data
     buffer resb 128
     format db "%s", 0
+    format2 db "%s", 32, 0
     nr db 0
     rez db 0
 
@@ -32,8 +33,9 @@ segment code use32 class=code
             call [scanf]
             
             add esp, 4 * 2
+            mov esi,buffer
             popad
-            cmp dword [buffer],0
+            cmp dword [buffer],48
             je afara
             mov edi,edx
             ;push dword 0
@@ -45,8 +47,17 @@ segment code use32 class=code
             pop edi
             
             push dword edi
+            push dword format2
             call [printf]
-            add esp, 4 * 1
+            add esp, 4 * 2
+            
+            mov ecx,128
+            mov edi,buffer
+            xor eax,eax
+            empty_buffer:
+                mov [edi],al
+                inc edi
+            loop empty_buffer
             
         loop repeta
         
